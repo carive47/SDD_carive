@@ -3,6 +3,9 @@
 Guía paso a paso. El kit es **agnóstico de la herramienta**: lo único que cambia
 es *dónde* viven las skills y *cómo* se piden las aprobaciones.
 
+> Este es el **resumen**. Para el detalle de cada fase (sub-fases, gates, brief,
+> contexto, supervisión, FAQ) usa el **[MANUAL.md](MANUAL.md)**.
+
 ---
 
 ## 0. Requisitos

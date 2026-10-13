@@ -74,6 +74,8 @@ deja el proyecto con `docs/`, `AGENTS.md`, `CLAUDE.md`, `specs/`, `contexts/` y
 `scripts/check_*.py` funcionando.
 
 El flujo completo, etapa por etapa, está en **[QUICKSTART.md](QUICKSTART.md)**.
+Para el detalle de cada fase (sub-fases, gates, brief, contexto, supervisión, FAQ)
+usa el **[MANUAL.md](MANUAL.md)**.
 
 ---
 
@@ -95,7 +97,8 @@ El flujo completo, etapa por etapa, está en **[QUICKSTART.md](QUICKSTART.md)**.
 | Documento | Para qué |
 |---|---|
 | **README.md** (este) | Puerta de entrada: instalar y usar. |
-| [QUICKSTART.md](QUICKSTART.md) | El flujo completo, etapa por etapa. |
+| [MANUAL.md](MANUAL.md) | **Manual completo**: fases, sub-fases, gates, brief, contexto, supervisión, FAQ y glosario. |
+| [QUICKSTART.md](QUICKSTART.md) | Resumen del flujo, etapa por etapa. |
 | [SHARING.md](SHARING.md) | Publicar/actualizar el kit y repartirlo. |
 | [presets/dsh/README.md](presets/dsh/README.md) | Detalle del preset y por qué se declara así. |
 

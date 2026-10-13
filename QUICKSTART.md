@@ -1,76 +1,36 @@
 # QUICKSTART — Arrancar un proyecto nuevo con SDD
 
-Guía paso a paso desde cero. El contenido del kit es **agnóstico de la
-herramienta**: lo único que cambia es *dónde* se colocan las skills y *cómo* se
-piden las aprobaciones.
+Guía paso a paso. El kit es **agnóstico de la herramienta**: lo único que cambia
+es *dónde* viven las skills y *cómo* se piden las aprobaciones.
 
 ---
 
 ## 0. Requisitos
 
-- Tener `sdd-kit/` a mano (este repositorio).
-- Git instalado (`git init` marca la raíz del proyecto y da el historial).
-- Un agente: DeepSeek Harness (DSH) **o** VS Code + Cline.
+- **DeepSeek Harness 0.2.x** (o VS Code + Cline: ver el final).
+- El **kit instalado una vez por máquina** (ver `SHARING.md`):
+  - Windows: `./install.ps1`
+  - macOS / Linux: `./install.sh`
+- `git` y `python` (Windows) o `python3` (macOS/Linux).
+
+La instalación deja las 11 skills en `<DSH_HOME>/skills` (globales: se ven en
+cualquier carpeta) y declara el preset **SDD**.
 
 ---
 
-## 1. Crear y entrar al proyecto
+## 1. Crear el proyecto
 
-```powershell
-mkdir mi-proyecto; cd mi-proyecto; git init
+```bash
+mkdir mi-proyecto && cd mi-proyecto && git init
 ```
 
 ---
 
-## 2. Copiar los assets del kit (una vez por proyecto)
+## 2. Preparar el contexto — SOLO si traes mucho
 
-### Desde DSH (DeepSeek Harness)
-
-```powershell
-Copy-Item -Recurse ..\sdd-kit\skills    .dsh\skills
-Copy-Item -Recurse ..\sdd-kit\scripts   scripts
-Copy-Item -Recurse ..\sdd-kit\contexts  contexts
-Copy-Item -Recurse ..\sdd-kit\templates templates
-```
-
-> DSH descubre las skills del proyecto en `<raíz>/.dsh/skills/`. La raíz es el
-> ancestro con `.git` (por eso `git init` va primero).
-
-### Desde VS Code + Cline
-
-```powershell
-Copy-Item -Recurse ..\sdd-kit\skills    .cline\skills
-Copy-Item -Recurse ..\sdd-kit\scripts   scripts
-Copy-Item -Recurse ..\sdd-kit\contexts  contexts
-Copy-Item -Recurse ..\sdd-kit\templates templates
-```
-
-> Cline lee skills de `.cline/skills/` (proyecto) o `~/.cline/skills/` (global),
-> y reglas de `.clinerules/`. Docs: https://docs.cline.bot/customization/skills y
-> https://docs.cline.bot/customization/cline-rules
-
-### (Opcional, Cline) Reglas globales del proyecto
-
-Crea `.clinerules/sdd.md` con las reglas fijas para que Cline las cargue siempre:
-
-```markdown
----
-alwaysApply: true
----
-Eres un facilitador SDD. La spec es el contrato: nada se implementa si no está
-en una spec aprobada. Trabaja por etapas y PÁRATE al final de cada etapa para
-pedir aprobación explícita. Lee docs/constitution.md y la spec activa antes de
-tocar código. Al terminar una tarea: corre los tests y
-`python scripts/check_spec_sync.py && python scripts/check_data_dict.py`.
-```
-
----
-
-## 3. Preparar el contexto — SOLO si traes mucho
-
-Si el proyecto tiene mucho contexto (ETL complejo, requisitos de cliente,
-fuentes de datos, esquemas existentes…), **antes de arrancar** crea `brief/` con
-todo el contexto crudo. Es un dump, no un prompt:
+Si el proyecto tiene mucho contexto (ETL complejo, requisitos de cliente, fuentes
+de datos, esquemas existentes…), **antes de arrancar** crea `brief/` con el
+contexto crudo. Es un dump, no un prompt:
 
 ```
 mi-proyecto/
@@ -86,7 +46,9 @@ agente te entreviste en la etapa de spec.
 
 ---
 
-## 4. Arrancar (primer prompt)
+## 3. Arrancar (primer prompt)
+
+Abre una sesión en la carpeta del proyecto, elige el preset **SDD** y escribe:
 
 **Con `brief/`:**
 ```
@@ -101,13 +63,16 @@ Usa sdd-scaffold para inicializar el proyecto, y seguimos el flujo SDD
 etapa por etapa, esperando mi aprobación en cada una.
 ```
 
-El agente leerá `contexts/INDEX.md`, te preguntará qué dominios aplican, y
-generará `docs/constitution.md`, `AGENTS.md`, `docs/data-dictionary.md`,
-`docs/roadmap.md` y `specs/`. **Aprobar antes de seguir.**
+`sdd-scaffold` es **autocontenido**: trae sus plantillas, context packs y checks en
+sus `references/`, y deja el proyecto con `docs/`, `AGENTS.md`, `CLAUDE.md`,
+`specs/`, `contexts/` y `scripts/check_*.py` operativos. **Aprobar antes de seguir.**
+
+> Si solo quieres las etapas iniciales, añade:
+> *"…SOLO hasta tareas. No implementes código."*
 
 ---
 
-## 5. Recorrer las etapas (siempre con aprobación)
+## 4. Recorrer las etapas (siempre con aprobación)
 
 | Etapa | Skill | Qué produce | Gate |
 |---|---|---|---|
@@ -120,23 +85,24 @@ generará `docs/constitution.md`, `AGENTS.md`, `docs/data-dictionary.md`,
 | Validación | `sdd-validate` | veredicto RF por RF | — |
 | Cambio | `sdd-change` | diff de spec + fichero en `changes/` | Aprobar |
 
-En cada etapa el agente usa su skill correspondiente y se detiene con
-`ask_user_question` (DSH) o pregunta en el chat (Cline).
-
-Cada spec se hace con su bucle completo (spec → clarificación → plan → tareas →
-implementación → validación), de una en una, en el orden de `docs/roadmap.md`.
+En cada etapa el agente usa su skill y se detiene con `ask_user_question` (DSH) o
+pregunta en el chat (Cline). Cada spec se hace con su bucle completo, de una en
+una, en el orden de `docs/roadmap.md`.
 
 ---
 
-## 6. Mantener la sincronización
+## 5. Mantener la sincronización
 
 - **Cambio** → `sdd-change`: primero la spec, luego el código; deja fichero en
   `specs/NNN-*/changes/` + línea en `CHANGELOG.md`.
 - **Checks** (al final de cada batch y en CI):
-  ```powershell
-  python scripts/check_spec_sync.py
-  python scripts/check_data_dict.py
+
   ```
+  python  scripts/check_spec_sync.py     # Windows
+  python3 scripts/check_spec_sync.py     # macOS/Linux
+  ```
+
+  Lo mismo con `check_data_dict.py`.
 
 ---
 
@@ -144,11 +110,11 @@ implementación → validación), de una en una, en el orden de `docs/roadmap.md
 
 | | DSH | VS Code + Cline |
 |---|---|---|
-| Skills en | `.dsh/skills/` | `.cline/skills/` (v3.48+) |
+| Skills en | `<DSH_HOME>/skills` (global) o `.dsh/skills/` | `.cline/skills/` (v3.48+) o `~/.cline/skills/` |
 | Reglas fijas | `AGENTS.md` + persona del preset | `AGENTS.md` + `.clinerules/` |
-| Modo SDD | agent preset `sdd` (ver `presets/dsh/sdd/`) | Plan/Act + `.clinerules/` |
+| Modo SDD | agent preset `sdd` (ver `presets/dsh/`) | Plan/Act + `.clinerules/` |
 | Aprobación | `ask_user_question` / modo plan | Plan mode + aprobación nativa de Cline |
-| Checks | scripts (mismo) | scripts (mismo) |
+| Checks | los mismos scripts | los mismos scripts |
 
 **Sí es posible con Cline**: el método es el mismo (specs + skills + checks), solo
 cambian las rutas y el mecanismo de aprobación.

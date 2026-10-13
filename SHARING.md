@@ -27,7 +27,7 @@ sistemas**. Las skills y los scripts de verificación son idénticos.
 
 ```bash
 cd /ruta/a/sdd-kit
-git remote add origin <URL_DEL_REPO>
+git remote add origin https://github.com/carive47/SDD_carive.git
 git push -u origin main
 ```
 
@@ -36,8 +36,8 @@ git push -u origin main
 **Windows (PowerShell):**
 
 ```powershell
-git clone <URL_DEL_REPO>
-cd sdd-kit
+git clone https://github.com/carive47/SDD_carive.git
+cd SDD_carive
 ./install.ps1
 ```
 
@@ -50,8 +50,8 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 **macOS / Linux:**
 
 ```bash
-git clone <URL_DEL_REPO>
-cd sdd-kit
+git clone https://github.com/carive47/SDD_carive.git
+cd SDD_carive
 ./install.sh
 ```
 

@@ -23,4 +23,5 @@ description: 'Implementa UNA sola tarea de tasks.md: tests primero, ejecuta la s
 - Si el código cambia un comportamiento, la spec manda: detente y pasa a
   `sdd-change` en vez de improvisar.
 - Al final de cada tarea, corre `python scripts/check_spec_sync.py` y
-  `python scripts/check_data_dict.py`; si fallan, arréglalo antes de parar.
+  `python scripts/check_data_dict.py` (`python3` en macOS/Linux); si fallan,
+  arréglalo antes de parar.

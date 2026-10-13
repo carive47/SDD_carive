@@ -7,7 +7,7 @@
 - Ejecutar: `<comando>`
 - Tests: `<comando>`
 - Lint/formato: `<comando>`
-- Sync: `python scripts/check_spec_sync.py && python scripts/check_data_dict.py`
+- Sync: `python scripts/check_spec_sync.py && python scripts/check_data_dict.py` _(macOS/Linux: `python3`)_
 
 ## Estilo y convenciones
 <Versión del lenguaje, convenciones de nombres, idioma del código y mensajes.>

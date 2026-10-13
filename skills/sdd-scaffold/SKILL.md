@@ -20,7 +20,8 @@ context packs y scripts de verificación) viven en `references/` de esta skill.
    (verbatim) + principios del proyecto (destilados del brief/packs seleccionados).
    Marca `[AWAITING APPROVAL]` al final.
 4. **Genera `AGENTS.md`** rellenando `references/templates/AGENTS.md` con comandos,
-   estilo y reglas del proyecto. `CLAUDE.md` = `@AGENTS.md`.
+   estilo y reglas del proyecto (usa el intérprete del sistema: `python` en
+   Windows, `python3` en macOS/Linux). `CLAUDE.md` = `@AGENTS.md`.
 5. **Genera `docs/data-dictionary.md`** (desde
    `references/templates/data-dictionary.md`, vacío) y `docs/schema.json` con
    `{ "tables": [] }`.
@@ -30,8 +31,8 @@ context packs y scripts de verificación) viven en `references/` de esta skill.
 8. **Copia los context packs**: `references/contexts/*` → `contexts/` (para
    futuras specs y `sdd-context-pack`).
 9. **Verificación final**: ejecuta `python scripts/check_spec_sync.py` y
-   `python scripts/check_data_dict.py`. El scaffold NO se da por bueno si alguno
-   falla (salida distinta de 0).
+   `python scripts/check_data_dict.py` (`python3` en macOS/Linux). El scaffold NO
+   se da por bueno si alguno falla (salida distinta de 0).
 10. **Pide aprobación explícita** antes de pasar a la spec 001.
 
 ## Reglas

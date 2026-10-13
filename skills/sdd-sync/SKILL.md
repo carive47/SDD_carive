@@ -20,6 +20,8 @@ tests y diccionario de datos están sincronizados.
 
 ## Reglas
 
+- **Intérprete**: usa `python` en Windows y `python3` en macOS/Linux (si `python`
+  no existe, prueba `python3`).
 - Los scripts son la fuente de verdad del check; no "inspecciones a ojo" y des
    por bueno un resultado en rojo.
 - Una corrección de sync puede implicar tocar spec, tareas, tests o diccionario:
